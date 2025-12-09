@@ -2,7 +2,7 @@
 echo "🔍 ТЕСТ СЕТЕВОГО ВЗАИМОДЕЙСТВИЯ"
 echo "================================"
 
-# 1. Показать сеть
+# 1. Показать 
 echo "1. Сеть restaurant_network:"
 docker network inspect restaurant_restaurant_network --format='{{range .Containers}}{{.Name}} - {{.IPv4Address}}{{"\n"}}{{end}}'
 
