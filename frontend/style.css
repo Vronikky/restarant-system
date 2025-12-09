@@ -1,0 +1,322 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #f5f7fa; color: #333; }
+
+.container { max-width: 1400px; margin: 0 auto; padding: 15px; }
+
+/* Шапка */
+header { 
+    background: white; 
+    padding: 12px 20px; 
+    margin-bottom: 15px; 
+    border-radius: 8px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+header h1 { font-size: 1.4rem; color: #2c3e50; }
+#status { 
+    background: #f8f9fa; 
+    padding: 6px 12px; 
+    border-radius: 4px; 
+    font-size: 0.9rem; 
+    color: #666; 
+}
+#status .fa-circle { 
+    font-size: 0.6rem; 
+    margin-right: 5px; 
+    color: #95a5a6; 
+}
+
+/* Основной контейнер */
+.main { 
+    display: grid; 
+    grid-template-columns: 2fr 1fr; 
+    gap: 15px; 
+    height: calc(100vh - 100px);
+}
+@media (max-width: 1200px) { 
+    .main { grid-template-columns: 1fr; } 
+}
+
+/* Карточки */
+.menu-card, .order-card, .orders-card, .stats-card, .monitor-card {
+    background: white; 
+    border-radius: 8px; 
+    padding: 15px; 
+    margin-bottom: 15px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+h2 { 
+    font-size: 1.1rem; 
+    margin-bottom: 12px; 
+    color: #2c3e50; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding-bottom: 8px; 
+    border-bottom: 1px solid #eee; 
+}
+
+/* Меню - КОМПАКТНОЕ */
+.filters { display: flex; gap: 6px; margin-bottom: 12px; }
+.filter { 
+    padding: 6px 12px; 
+    border: 1px solid #ddd; 
+    background: white; 
+    color: #555; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 0.85rem; 
+}
+.filter.active { background: #3498db; color: white; border-color: #3498db; }
+
+.menu-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+    gap: 10px; 
+    max-height: 320px; 
+    overflow-y: auto; 
+    padding: 5px; 
+}
+.menu-item { 
+    background: #f8fafc; 
+    border-radius: 6px; 
+    padding: 10px; 
+    border: 1px solid #e8f4fc; 
+    height: 120px; 
+    display: flex; 
+    flex-direction: column; 
+}
+.menu-header { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 6px; 
+}
+.item-name { 
+    font-weight: 600; 
+    color: #2c3e50; 
+    font-size: 0.9rem; 
+    max-width: 110px; 
+}
+.item-price { color: #27ae60; font-weight: bold; font-size: 0.95rem; }
+.item-desc { 
+    color: #666; 
+    font-size: 0.75rem; 
+    margin-bottom: 8px; 
+    flex-grow: 1; 
+    overflow: hidden; 
+    display: -webkit-box; 
+    /* -webkit-line-clamp: 2;  */
+    -webkit-box-orient: vertical; 
+}
+.menu-footer { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.item-category { 
+    background: #e8f4fc; 
+    color: #3498db; 
+    padding: 2px 6px; 
+    border-radius: 3px; 
+    font-size: 0.7rem; 
+}
+.add-btn { 
+    padding: 4px 8px; 
+    background: #2ecc71; 
+    color: white; 
+    border: none; 
+    border-radius: 3px; 
+    cursor: pointer; 
+    font-size: 0.75rem; 
+    display: flex; 
+    align-items: center; 
+    gap: 4px; 
+}
+
+/* Заказ */
+.table-input { margin-bottom: 12px; }
+.table-input label { display: block; margin-bottom: 4px; color: #555; font-size: 0.9rem; }
+.table-input input { 
+    width: 70px; 
+    padding: 6px; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    font-size: 0.9rem; 
+}
+
+.items-list { 
+    min-height: 100px; 
+    max-height: 180px; 
+    overflow-y: auto; 
+    margin: 12px 0; 
+    padding: 6px; 
+    background: #f8f9fa; 
+    border-radius: 4px; 
+    border: 1px solid #eee; 
+}
+.order-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 6px; 
+    background: white; 
+    border-radius: 3px; 
+    margin-bottom: 4px; 
+    border: 1px solid #eee; 
+    font-size: 0.85rem; 
+}
+.order-info { flex: 1; }
+.order-info strong { font-size: 0.85rem; display: block; }
+.order-info small { color: #666; font-size: 0.75rem; }
+.controls { display: flex; align-items: center; gap: 6px; margin: 0 8px; }
+.qty-btn { 
+    width: 22px; 
+    height: 22px; 
+    border-radius: 50%; 
+    border: none; 
+    background: #3498db; 
+    color: white; 
+    cursor: pointer; 
+    font-size: 0.7rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+.qty-btn.remove { background: #e74c3c; }
+.qty-display { min-width: 22px; text-align: center; font-weight: bold; font-size: 0.85rem; }
+.item-total { font-weight: bold; color: #27ae60; min-width: 60px; text-align: right; font-size: 0.9rem; }
+
+.summary { 
+    background: #f8f9fa; 
+    padding: 10px; 
+    border-radius: 4px; 
+    margin: 12px 0; 
+    border: 1px solid #eee; 
+    font-size: 0.9rem; 
+}
+.row { display: flex; justify-content: space-between; padding: 5px 0; }
+.row.total { border-top: 1px solid #ddd; margin-top: 5px; padding-top: 8px; font-weight: bold; font-size: 1rem; }
+#total-amount { color: #27ae60; }
+
+.buttons { display: flex; gap: 8px; margin-top: 12px; }
+.btn { 
+    flex: 1; 
+    padding: 10px; 
+    border: none; 
+    border-radius: 4px; 
+    font-size: 0.9rem; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 6px; 
+}
+.btn.clear { background: #f0f0f0; color: #555; }
+.btn.submit { background: #27ae60; color: white; }
+
+/* Активные заказы */
+.order { 
+    background: #f8f9fa; 
+    border-radius: 4px; 
+    padding: 10px; 
+    margin-bottom: 8px; 
+    border-left: 3px solid #3498db; 
+}
+.order.cooking { border-left-color: #f39c12; }
+.order.pending { border-left-color: #3498db; }
+.order-top { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 6px; 
+}
+.order-top strong { font-size: 0.9rem; }
+.table { 
+    background: #3498db; 
+    color: white; 
+    padding: 2px 6px; 
+    border-radius: 8px; 
+    font-size: 0.75rem; 
+}
+.order-items { font-size: 0.8rem; color: #666; margin-bottom: 6px; }
+.order-price { text-align: right; font-weight: bold; color: #27ae60; font-size: 0.9rem; }
+
+/* Статистика */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat { 
+    background: #f8f9fa; 
+    padding: 8px; 
+    border-radius: 4px; 
+    text-align: center; 
+    border: 1px solid #eee; 
+}
+.stat-label { color: #666; font-size: 0.75rem; margin-bottom: 4px; }
+.stat-value { font-size: 1rem; font-weight: bold; color: #2c3e50; }
+
+/* Мониторинг - ДОБАВИЛ PROMETHEUS */
+.links { display: flex; flex-direction: column; gap: 6px; }
+.links a { 
+    background: #f8f9fa; 
+    padding: 8px 10px; 
+    border-radius: 4px; 
+    text-decoration: none; 
+    color: #3498db; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    font-size: 0.85rem; 
+    border: 1px solid #eee; 
+}
+.links a:hover { background: #e8f4fc; border-color: #3498db; }
+
+/* Уведомления */
+.notification {
+    position: fixed; 
+    bottom: 15px; 
+    right: 15px; 
+    background: #27ae60; 
+    color: white; 
+    padding: 12px 15px; 
+    border-radius: 4px; 
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    display: none; 
+    align-items: center; 
+    gap: 10px; 
+    min-width: 200px; 
+    z-index: 1000; 
+    font-size: 0.85rem; 
+}
+.notification.show { display: flex; animation: slideIn 0.2s ease; }
+.notification.error { background: #e74c3c; }
+.notification.info { background: #3498db; }
+.notification button { 
+    background: none; 
+    border: none; 
+    color: white; 
+    cursor: pointer; 
+    padding: 0; 
+    font-size: 1.2rem; 
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Пустые сообщения */
+.empty-message { 
+    text-align: center; 
+    color: #999; 
+    font-style: italic; 
+    padding: 20px; 
+    font-size: 0.9rem; 
+}
+
+/* Скроллбар */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; }
+::-webkit-scrollbar-thumb:hover { background: #aaa; }

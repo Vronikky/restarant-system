@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  # База данных (только на manager)
+  db:
+    image: postgres:15-alpine
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      POSTGRES_USER: restaurant
+      POSTGRES_PASSWORD: restaurant123
+      POSTGRES_DB: restaurant_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - restaurant_network
+
+  # Redis для очередей
+  redis:
+    image: redis:7-alpine
+    deploy:
+      replicas: 1
+    command: redis-server --requirepass redis123
+    volumes:
+      - redis_data:/data
+    networks:
+      - restaurant_network
+
+  # Backend API (масштабируемый)
+  backend:
+    image: restaurant-backend:latest
+    deploy:
+      replicas: 3
+    environment:
+      DATABASE_URL: postgresql://restaurant:restaurant123@db:5432/restaurant_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+    networks:
+      - restaurant_network
+    depends_on:
+      - db
+      - redis
+
+  # Frontend
+  frontend:
+    image: restaurant-frontend:latest
+    deploy:
+      replicas: 2
+    networks:
+      - restaurant_network
+    depends_on:
+      - backend
+
+  # Load Balancer - ФИКСИРОВАННЫЕ ПОРТЫ
+  nginx:
+    image: nginx:alpine
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - ./nginx/nginx-swarm.conf:/etc/nginx/nginx.conf
+    networks:
+      - restaurant_network
+    ports:
+      - "80:80"  # ФИКС: было с переменной окружения
+
+  # Мониторинг - ФИКСИРОВАННЫЕ ПОРТЫ
+  prometheus:
+    image: prom/prometheus:latest
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - restaurant_network
+    ports:
+      - "9090:9090"  # ФИКС: было с переменной окружения
+
+  grafana:
+    image: grafana/grafana:latest
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - restaurant_network
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"  # ФИКС: было с переменной окружения
+
+networks:
+  restaurant_network:
+    driver: overlay
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

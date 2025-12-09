@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Ресторан - Заказы</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ Ресторан "Вкусный уголок"</h1>
+            <div id="status">
+                <i class="fas fa-circle"></i> <span id="status-text">Проверка...</span>
+            </div>
+        </header>
+
+        <div class="main">
+            <!-- Левая часть - Меню и Заказ -->
+            <div class="left-side">
+                <!-- Меню -->
+                <div class="menu-card">
+                    <h2><i class="fas fa-book"></i> Меню</h2>
+                    <div class="filters">
+                        <button class="filter active" onclick="filterMenu('all')">Все</button>
+                        <button class="filter" onclick="filterMenu('main')">Основное</button>
+                        <button class="filter" onclick="filterMenu('starters')">Закуски</button>
+                        <button class="filter" onclick="filterMenu('drinks')">Напитки</button>
+                        <button class="filter" onclick="filterMenu('soups')">Супы</button>
+                        <button class="filter" onclick="filterMenu('desserts')">Десерты</button>
+                    </div>
+                    <div class="menu-grid" id="menu-items">
+                        <p class="empty-message">Загрузка меню...</p>
+                    </div>
+                </div>
+
+                <!-- Заказ -->
+                <div class="order-card">
+                    <h2><i class="fas fa-shopping-cart"></i> Новый заказ</h2>
+                    
+                    <div class="table-input">
+                        <label>Стол №:</label>
+                        <input type="number" id="table-number" min="1" max="20" value="1">
+                    </div>
+
+                    <div class="items-list" id="order-items">
+                        <p class="empty-message">Добавьте блюда из меню</p>
+                    </div>
+
+                    <div class="summary">
+                        <div class="row">
+                            <span>Позиций:</span>
+                            <span id="items-count">0</span>
+                        </div>
+                        <div class="row">
+                            <span>Количество:</span>
+                            <span id="total-quantity">0</span>
+                        </div>
+                        <div class="row total">
+                            <span>Итого:</span>
+                            <span id="total-amount">0 ₽</span>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button class="btn clear" onclick="clearOrder()">
+                            <i class="fas fa-trash"></i> Очистить
+                        </button>
+                        <button class="btn submit" onclick="submitOrder()">
+                            <i class="fas fa-paper-plane"></i> Отправить
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая часть - Заказы и Статистика -->
+            <div class="right-side">
+                <!-- Активные заказы -->
+                <div class="orders-card">
+                    <h2><i class="fas fa-clock"></i> Активные заказы</h2>
+                    <div id="active-orders">
+                        <div class="order cooking">
+                            <div class="order-top">
+                                <strong>#101</strong>
+                                <span class="table">Стол 5</span>
+                            </div>
+                            <div class="order-items">Пицца Маргарита, Салат Цезарь, Кола</div>
+                            <div class="order-price">1,150 ₽</div>
+                        </div>
+                        <div class="order pending">
+                            <div class="order-top">
+                                <strong>#102</strong>
+                                <span class="table">Стол 3</span>
+                            </div>
+                            <div class="order-items">Стейк Рибай, Кофе Американо</div>
+                            <div class="order-price">1,400 ₽</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="stats-card">
+                    <h2><i class="fas fa-chart-bar"></i> Статистика</h2>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">Заказов:</div>
+                            <div class="stat-value" id="orders-today">15</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Выручка:</div>
+                            <div class="stat-value" id="revenue">28,450 ₽</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">В работе:</div>
+                            <div class="stat-value" id="active-count">2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Мониторинг -->
+                <div class="monitor-card">
+                    <h2><i class="fas fa-tools"></i> Мониторинг</h2>
+                    <div class="links">
+                        <a href="http://localhost:8000/docs" target="_blank">
+                            <i class="fas fa-code"></i> API Документация
+                        </a>
+                        <a href="http://localhost:3000" target="_blank">
+                            <i class="fas fa-chart-line"></i> Графана
+                        </a>
+                        <a href="http://localhost:9090" target="_blank">
+                            <i class="fas fa-database"></i> Prometheus
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Уведомление -->
+        <div class="notification" id="notification">
+            <span id="notification-message"></span>
+            <button onclick="hideNotification()">×</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
