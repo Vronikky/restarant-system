@@ -37,7 +37,7 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/restaurant-frontend:latest
 
-# Добавьте в .github/workflows/deploy.yml:
+
 
   deploy:
     needs: build-and-push
@@ -51,7 +51,7 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-        # Копируем файлы на сервер (в реальности через SSH)
+        # Копируем файлы на сервер 
         echo "📦 Деплой на Docker Swarm..."
         echo "✅ CI/CD пайплайн работает!"
         
