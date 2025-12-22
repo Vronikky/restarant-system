@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # База данных (только на manager)
+  # База данных 
   db:
     image: postgres:15-alpine
     deploy:
@@ -15,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
 
   # Redis для очередей
   redis:
@@ -26,7 +26,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
 
   # Backend API (масштабируемый)
   backend:
@@ -39,7 +39,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
     depends_on:
       - db
       - redis
@@ -50,11 +50,11 @@ services:
     deploy:
       replicas: 2
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
     depends_on:
       - backend
 
-  # Load Balancer - ФИКСИРОВАННЫЕ ПОРТЫ
+  # Load Balancer
   nginx:
     image: nginx:alpine
     deploy:
@@ -64,11 +64,13 @@ services:
     volumes:
       - ./nginx/nginx-swarm.conf:/etc/nginx/nginx.conf
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
     ports:
-      - "80:80"  # ФИКС: было с переменной окружения
+      - "80:80"  
+    depends_on:
+      - frontend
 
-  # Мониторинг - ФИКСИРОВАННЫЕ ПОРТЫ
+  # Мониторинг 
   prometheus:
     image: prom/prometheus:latest
     deploy:
@@ -79,9 +81,9 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
     ports:
-      - "9090:9090"  # ФИКС: было с переменной окружения
+      - "9090:9090"  
 
   grafana:
     image: grafana/grafana:latest
@@ -95,15 +97,16 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
     networks:
-      - restaurant_network
+      - restaurant_restaurant_network
     depends_on:
       - prometheus
     ports:
-      - "3000:3000"  # ФИКС: было с переменной окружения
+      - "3000:3000"  
 
 networks:
-  restaurant_network:
+   restaurant_restaurant_network:
     driver: overlay
+    attachable: true
 
 volumes:
   postgres_data:
