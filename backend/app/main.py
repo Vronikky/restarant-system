@@ -18,6 +18,15 @@ logger = logging.getLogger(__name__)
 try:
     Base.metadata.create_all(bind=engine)
     logger.info("Таблицы базы данных созданы/проверены")
+    
+    # Запустить init_data для добавления тестовых данных
+    import subprocess
+    result = subprocess.run(["python", "init_data.py"], capture_output=True, text=True)
+    if result.returncode == 0:
+        logger.info("Тестовые данные добавлены")
+    else:
+        logger.warning(f"init_data.py завершился с кодом {result.returncode}: {result.stderr}")
+        
 except Exception as e:
     logger.error(f"Ошибка создания таблиц: {e}")
 
