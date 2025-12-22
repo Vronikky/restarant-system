@@ -6,7 +6,7 @@ from sqlalchemy import text
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from app.db.database import SessionLocal, engine
+from app.db.database import SessionLocal, engine, Base
 from app.models.models import MenuItem
 
 def wait_for_db(max_retries=30, delay=2):
@@ -26,7 +26,9 @@ def wait_for_db(max_retries=30, delay=2):
 
 def init_test_data():
     print("Инициализация базы данных...")
-    
+    print("Создание таблиц...")
+    Base.metadata.create_all(bind=engine)
+    print("Таблицы созданы")
     # Ожидаем подключение к БД
     if not wait_for_db():
         print("Не удалось подключиться к базе данных")
@@ -34,34 +36,40 @@ def init_test_data():
     
     db = SessionLocal()
     try:
+        from app.db.database import Base, engine
+        Base.metadata.create_all(bind=engine)
+        print("Таблицы базы данных созданы")
         # Проверяем, есть ли уже данные
         if db.query(MenuItem).first():
             print("Данные уже существуют в базе")
             return
         # Добавляем тестовые блюда
         menu_items = [
-            {"name": "Пицца Маргарита", "description": "Сыр моцарелла, томаты, базилик", "price": 550, "category": "main"},
-            {"name": "Стейк Рибай", "description": "Мраморная говядина, 300г", "price": 1200, "category": "main"},
+            {"name": "Пицца Маргарита", "description": "Сыр, томаты, базилик", "price": 550, "category": "main"},
+            {"name": "Стейк Рибай", "description": "Говядина 300г", "price": 1200, "category": "main"},
             {"name": "Паста Карбонара", "description": "Спагетти, бекон, сыр", "price": 480, "category": "main"},
             {"name": "Бургер Классик", "description": "Говядина, сыр, овощи", "price": 420, "category": "main"},
             {"name": "Курица Гриль", "description": "С картофелем", "price": 380, "category": "main"},
             {"name": "Лосось на гриле", "description": "С овощами", "price": 850, "category": "main"},
-            {"name": "Салат Цезарь", "description": "С курицей, пармезаном и соусом", "price": 450, "category": "starters"},
+            {"name": "Салат Цезарь", "description": "Курица, пармезан", "price": 450, "category": "starters"},
             {"name": "Брускетта", "description": "Томаты, базилик", "price": 280, "category": "starters"},
             {"name": "Сырные палочки", "description": "С соусом", "price": 320, "category": "starters"},
             {"name": "Креветки в кляре", "description": "8 шт", "price": 520, "category": "starters"},
-            {"name": "Тирамису", "description": "Итальянский десерт", "price": 350, "category": "desserts"},
+            {"name": "Оливки", "description": "Маринованные", "price": 180, "category": "starters"},
             {"name": "Борщ", "description": "Сметана, зелень", "price": 300, "category": "soups"},
-            {"name": "Суп-пюре грибной", "description": "Грибы шампиньоны с гренками", "price": 280, "category": "soups"},
-            {"name": "Том Ям", "description": "Тайский суп", "price":450, "category": "soups"},
-            {"name": "Кофе", "description": "Американо, Каппучино, Раф, Латте, Пряный латте", "price": 200, "category": "drinks"},
-            {"name": "Кола 0.5л", "description": "Газированный напиток", "price": 150, "category": "drinks"},
-            {"name": "Сок Свежевыжатый", "description": "апельсиновый/яблочный", "price": 130, "category": "drinks"},
-            {"name": "Чай зеленый/черный", "description": "С лимоном/мятой/малиной", "price": 120, "category": "drinks"},
-            {"name": "Морс Домашний", "description": "ягодный", "price": 80, "category": "drinks"},
-            {"name": "Чизкейк", "description": "Нью-Йорк", "price": 320, "category": "deserts"},
-            {"name": "Мороженое 3 шарика", "description": "ваниль, шоколад, клубника", "price": 250, "category": "deserts"},
-            {"name": "Шоколадный фондан", "description": "С мороженым", "price": 380, "category": "deserts"},
+            {"name": "Суп-пюре грибной", "description": "С гренками", "price": 280, "category": "soups"},
+            {"name": "Харчо", "description": "Острый суп", "price": 320, "category": "soups"},
+            {"name": "Том Ям", "description": "Тайский суп", "price": 450, "category": "soups"},
+            {"name": "Кола 0.5л", "description": "Напиток", "price": 150, "category": "drinks"},
+            {"name": "Кофе Американо", "description": "Свежий", "price": 200, "category": "drinks"},
+            {"name": "Сок апельсиновый", "description": "Свежевыжатый", "price": 180, "category": "drinks"},
+            {"name": "Чай черный", "description": "С лимоном", "price": 120, "category": "drinks"},
+            {"name": "Морс ягодный", "description": "Домашний", "price": 160, "category": "drinks"},
+            {"name": "Пиво разливное", "description": "0.5л", "price": 220, "category": "drinks"},
+            {"name": "Тирамису", "description": "Итальянский", "price": 350, "category": "desserts"},
+            {"name": "Чизкейк", "description": "Нью-Йорк", "price": 320, "category": "desserts"},
+            {"name": "Мороженое", "description": "3 шарика", "price": 250, "category": "desserts"},
+            {"name": "Шоколадный фондан", "description": "С мороженым", "price": 380, "category": "desserts"},
         ]
         
         for item_data in menu_items:
